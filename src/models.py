@@ -21,3 +21,9 @@ class Product(BaseModel):
     name: str
     price: Price
     reviews: Review = Review(rating=0, reviewsCount=0)
+
+
+class ProductInfo(BaseModel):
+    description: str
+    instructions: str
+    country: str
