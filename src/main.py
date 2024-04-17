@@ -1,33 +1,40 @@
-import requests
 import config
 from models import Product
+import csv
 
-
-def get_products(data):
-    response = requests.post(
-        config.site_url,
-        headers=config.headers,
-        json=data,
-    )
-
-    return response.json().get("data", {}).get("products", [])
+from utils import get_product_info, get_products
 
 
 def main():
     data = config.json_data
     page = 1
-    while True:
-        data["pageNumber"] = page
-        products = get_products(data)
-        if products:
-            for product in products:
-                p = Product(**product)
-                # product_info = get_product_info(p.url)
-                print(p.url, p.name, p.price.actual.amount, p.reviews.rating)
-        else:
-            break
+    with open("products.csv", "w", encoding="utf-8") as f:
+        writer = csv.writer(f, lineterminator="\n", delimiter=";")
+        while page < 2:
+            data["pageNumber"] = page
+            products = get_products(data)
+            if products:
+                for product in products:
+                    p = Product(**product)
+                    print(f"{config.base_site_url}{p.url}")
+                    product_info = get_product_info(
+                        f"{config.base_site_url}{p.url}"
+                    )
+                    writer.writerow(
+                        [
+                            f"{config.base_site_url}{p.url}",
+                            p.name,
+                            p.price.actual.amount,
+                            p.reviews.rating,
+                            product_info.description,
+                            product_info.instructions,
+                            product_info.country,
+                        ]
+                    )
+            else:
+                break
 
-        page += 1
+            page += 1
     print("Done")
 
 
