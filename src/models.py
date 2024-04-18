@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 
 class Amount(BaseModel):
@@ -13,7 +13,7 @@ class Price(BaseModel):
 
 class Review(BaseModel):
     rating: float
-    reviewsCount: int  # TODO: fix to PEP8
+    reviews_count: int = Field(alias="reviewsCount")
 
 
 class Product(BaseModel):
