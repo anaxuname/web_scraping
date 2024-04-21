@@ -19,6 +19,6 @@ base_site_url = "https://goldapple.ru"
 site_url = base_site_url + "/front/api/catalog/products"
 
 
-MAX_PAGES = 2
+MAX_PAGES = 1
 
 TIME_TO_SLEEP = 4
