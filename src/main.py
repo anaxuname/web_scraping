@@ -14,14 +14,13 @@ def main():
     page = 1
     with open("products.csv", "w", encoding="utf-8") as f:
         writer = csv.writer(f, lineterminator="\n", delimiter=";")
-        while page < config.MAX_PAGES:
+        while page <= config.MAX_PAGES:
             data["pageNumber"] = page
             products = get_products(data)
             sleep(config.TIME_TO_SLEEP)
             if products:
                 for product in products:
                     p = Product(**product)
-                    print(p.model_dump())
                     print(f"{config.base_site_url}{p.url}")
                     product_info = get_product_info(
                         f"{config.base_site_url}{p.url}"
